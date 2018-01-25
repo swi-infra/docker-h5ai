@@ -5,8 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV HTTPD_USER nobody
 
 RUN apk add --no-cache \
-   php5-fpm supervisor php5-json \
-   wget unzip patch php5-gd
+                       php5-fpm supervisor php5-json \
+                       wget unzip patch php5-gd
 
 # install h5ai and patch configuration
 ENV H5AI_VERSION 0.29.0+002~140eb30
@@ -28,6 +28,9 @@ RUN rm -rf /var/cache/apk/* /tmp/*
 # use supervisor to monitor all services
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+# default config
+COPY h5ai.nginx.conf /etc/nginx/conf.d/default.conf
 
 # expose only nginx HTTP port
 EXPOSE 80 443
